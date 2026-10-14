@@ -1,0 +1,176 @@
+/* ==============================================================================
+   Amravati City Bus Management System
+   Forms, Modal Dialogs & Interactive Seat Grid Stylesheet
+   ============================================================================== */
+
+.form-label {
+    font-weight: 600;
+    font-size: 0.88rem;
+    color: var(--text-primary);
+    margin-bottom: 0.4rem;
+}
+
+.form-control, .form-select {
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 0.65rem 0.9rem;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--accent-teal);
+    box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15);
+}
+
+/* Seat Selection Layout */
+.bus-seat-layout {
+    background-color: #f8fafc;
+    border: 2px dashed var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 2rem 1.5rem;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.bus-front-indicator {
+    text-align: center;
+    background-color: #e2e8f0;
+    color: var(--text-secondary);
+    font-weight: 700;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.5rem;
+    border-radius: var(--radius-sm);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.seats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
+    justify-items: center;
+}
+
+/* Create aisle between column 2 and column 3 */
+.seats-grid > div:nth-child(4n + 2) {
+    margin-right: 1.5rem;
+}
+
+.seat-box {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+    border: 2px solid transparent;
+}
+
+.seat-box.available {
+    background-color: #ffffff;
+    border-color: #cbd5e1;
+    color: var(--text-primary);
+}
+
+.seat-box.available:hover {
+    border-color: var(--accent-teal);
+    background-color: var(--teal-light);
+    color: var(--accent-teal);
+    transform: scale(1.05);
+}
+
+.seat-box.selected {
+    background-color: var(--accent-teal);
+    color: #ffffff;
+    border-color: var(--accent-teal);
+    box-shadow: 0 4px 6px -1px rgba(13, 148, 136, 0.4);
+}
+
+.seat-box.booked {
+    background-color: #e2e8f0;
+    color: #94a3b8;
+    border-color: #cbd5e1;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+/* Seat Legend */
+.seat-legend {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.legend-color {
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+}
+
+.legend-color.available {
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+}
+
+.legend-color.selected {
+    background: var(--accent-teal);
+}
+
+.legend-color.booked {
+    background: #cbd5e1;
+}
+
+/* Payment Mode Option Cards */
+.payment-methods-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 0.75rem;
+}
+
+.payment-method-card {
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 1rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: #ffffff;
+}
+
+.payment-method-card:hover {
+    border-color: var(--accent-teal);
+}
+
+.payment-method-card.selected {
+    border-color: var(--accent-teal);
+    background-color: var(--teal-light);
+    color: var(--teal-hover);
+    font-weight: 600;
+}
+
+.payment-method-card i {
+    font-size: 1.5rem;
+    margin-bottom: 0.4rem;
+    display: block;
+}

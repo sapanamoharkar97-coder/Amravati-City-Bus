@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics & Reports | Amravati City Bus Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/dashboard.css" rel="stylesheet">
+</head>
+<body>
+
+    <div class="dashboard-wrapper">
+        <aside class="dashboard-sidebar">
+            <div class="sidebar-header">
+                <a href="dashboard.html" class="sidebar-brand">
+                    <i class="fas fa-bus-alt text-teal"></i>
+                    <span>Amravati Bus</span>
+                </a>
+            </div>
+
+            <div class="sidebar-nav">
+                <div class="nav-section-title">Core Administration</div>
+                <a href="dashboard.html" class="sidebar-link">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="buses.html" class="sidebar-link">
+                    <i class="fas fa-bus"></i>
+                    <span>Bus Fleet</span>
+                </a>
+                <a href="routes.html" class="sidebar-link">
+                    <i class="fas fa-route"></i>
+                    <span>Routes</span>
+                </a>
+                <a href="stops.html" class="sidebar-link">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Bus Stops</span>
+                </a>
+
+                <div class="nav-section-title">Operations & Crew</div>
+                <a href="schedules.html" class="sidebar-link">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Schedules</span>
+                </a>
+                <a href="drivers.html" class="sidebar-link">
+                    <i class="fas fa-id-card"></i>
+                    <span>Drivers</span>
+                </a>
+                <a href="conductors.html" class="sidebar-link">
+                    <i class="fas fa-user-tie"></i>
+                    <span>Conductors</span>
+                </a>
+
+                <div class="nav-section-title">Finance & Intelligence</div>
+                <a href="bookings.html" class="sidebar-link">
+                    <i class="fas fa-ticket-alt"></i>
+                    <span>Bookings</span>
+                </a>
+                <a href="reports.html" class="sidebar-link active">
+                    <i class="fas fa-chart-pie"></i>
+                    <span>Analytics & Reports</span>
+                </a>
+
+                <div class="nav-section-title">Account</div>
+                <a href="profile.html" class="sidebar-link">
+                    <i class="fas fa-user-cog"></i>
+                    <span>My Profile</span>
+                </a>
+            </div>
+
+            <div class="sidebar-footer">
+                <button class="btn btn-sm btn-outline-light w-100 btn-logout">
+                    <i class="fas fa-sign-out-alt me-1"></i> Sign Out
+                </button>
+            </div>
+        </aside>
+
+        <main class="dashboard-main">
+            <header class="dashboard-header">
+                <div class="d-flex align-items-center gap-3">
+                    <h5 class="fw-bold mb-0">Operational Analytics & Reports</h5>
+                    <span class="badge bg-light text-muted border">Views & Aggregates</span>
+                </div>
+
+                <div class="d-flex align-items-center gap-3">
+                    <div class="user-profile-menu">
+                        <div id="headerUserAvatar" class="avatar-circle">AD</div>
+                        <div class="d-none d-md-block text-start">
+                            <div id="headerUserName" class="fw-bold small lh-1">Admin</div>
+                            <small id="headerUserRole" class="text-muted" style="font-size: 0.75rem;">ADMINISTRATOR</small>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="dashboard-content">
+                <!-- Action Bar -->
+                <div class="card border-0 shadow-sm p-3 mb-4 rounded-3 bg-white">
+                    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                        <div>
+                            <h6 class="fw-bold mb-0">Management Export Center</h6>
+                            <small class="text-muted">Generate CSV exports for academic viva demonstration and spreadsheet audits.</small>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button id="btnExportRevenueCSV" class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-file-csv me-1"></i> Export Revenue CSV
+                            </button>
+                            <button id="btnExportRoutesCSV" class="btn btn-sm btn-outline-success">
+                                <i class="fas fa-file-csv me-1"></i> Export Routes CSV
+                            </button>
+                            <button id="btnExportOccupancyCSV" class="btn btn-sm btn-outline-info">
+                                <i class="fas fa-file-csv me-1"></i> Export Occupancy CSV
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Row 1 -->
+                <div class="row g-4 mb-4">
+                    <!-- Revenue by Method -->
+                    <div class="col-lg-5">
+                        <div class="table-card h-100">
+                            <div class="table-card-header">
+                                <h6 class="fw-bold mb-0"><i class="fas fa-pie-chart text-teal me-2"></i>Revenue by Payment Method</h6>
+                            </div>
+                            <div class="p-3" style="position: relative; height: 300px;">
+                                <canvas id="revenueChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Popular Routes -->
+                    <div class="col-lg-7">
+                        <div class="table-card h-100">
+                            <div class="table-card-header">
+                                <h6 class="fw-bold mb-0"><i class="fas fa-bar-chart text-primary me-2"></i>Popular Routes Performance</h6>
+                            </div>
+                            <div class="p-3" style="position: relative; height: 300px;">
+                                <canvas id="popularRoutesChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Occupancy Chart & Tables -->
+                <div class="row g-4">
+                    <div class="col-lg-6">
+                        <div class="table-card h-100">
+                            <div class="table-card-header">
+                                <h6 class="fw-bold mb-0"><i class="fas fa-users text-teal me-2"></i>Bus Occupancy Utilization %</h6>
+                            </div>
+                            <div class="p-3" style="position: relative; height: 320px;">
+                                <canvas id="occupancyChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="table-card h-100">
+                            <div class="table-card-header">
+                                <h6 class="fw-bold mb-0"><i class="fas fa-table text-teal me-2"></i>Route Volume Leaderboard</h6>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table custom-table align-middle">
+                                    <thead>
+                                        <tr>
+                                            <th>Route</th>
+                                            <th>Name</th>
+                                            <th>Bookings</th>
+                                            <th>Riders</th>
+                                            <th>Total (₹)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="popularRoutesTableBody">
+                                        <tr><td colspan="5" class="text-center py-3 text-muted">Loading route metrics...</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Chart.js and Bootstrap CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/reports.js"></script>
+</body>
+</html>

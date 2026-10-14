@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amravati City Bus Management System | Smart Transit</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome 6 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <!-- Custom Theme Styles -->
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/forms.css" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Main Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-bus-alt"></i>
+                <span>Amravati City Bus</span>
+            </a>
+            <button class="navbar-toggler text-white border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navMenu">
+                <ul class="navbar-nav ms-auto align-items-center gap-2">
+                    <li class="nav-item"><a class="nav-link active" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#popularRoutes">Routes</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#features">Features</a></li>
+                    <li class="nav-item" id="navAuthLinks">
+                        <a href="login.html" class="btn btn-outline-light btn-sm px-3 me-2">Login</a>
+                        <a href="register.html" class="btn btn-teal btn-sm px-3">Sign Up</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section text-center">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <span class="badge bg-teal px-3 py-2 mb-3 text-uppercase fw-bold letter-spacing">
+                        <i class="fas fa-shield-alt me-1"></i> Official Academic DBMS Project
+                    </span>
+                    <h1 class="hero-title">Smart, Connected Transit for Amravati City</h1>
+                    <p class="hero-subtitle">
+                        Experience automated bus ticketing, real-time seat reservations, and efficient transit connecting Badnera Station, Rajkamal Square, SGBAU University, and beyond.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Schedule Search Container -->
+    <div class="container mb-5">
+        <div class="search-card">
+            <div class="row align-items-center mb-3">
+                <div class="col-md-8">
+                    <h4 class="fw-bold mb-1"><i class="fas fa-route text-teal me-2"></i>Find Your City Bus</h4>
+                    <p class="text-muted small mb-0">Search schedules across all 10 major transit nodes in Amravati</p>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <span class="badge bg-light text-dark border px-3 py-2">
+                        <i class="fas fa-circle text-success me-1"></i> Live MySQL Backend
+                    </span>
+                </div>
+            </div>
+
+            <form id="landingSearchForm" class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label">Boarding Stop</label>
+                    <select id="quickSourceStop" class="form-select" required>
+                        <option value="">Select Boarding Point</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Destination Stop</label>
+                    <select id="quickDestStop" class="form-select" required>
+                        <option value="">Select Drop-off Point</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">Travel Date</label>
+                    <input type="date" id="quickTravelDate" class="form-control" required>
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="submit" class="btn btn-teal w-100 py-2">
+                        <i class="fas fa-search me-1"></i> Search
+                    </button>
+                </div>
+            </form>
+
+            <!-- Results Preview Container -->
+            <div id="quickSearchResults" class="mt-4 d-none">
+                <h6 class="fw-bold text-muted border-bottom pb-2">Available Schedules</h6>
+                <div id="quickSchedulesList" class="row g-3"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Amravati Network Highlights -->
+    <section class="container py-5" id="popularRoutes">
+        <div class="text-center mb-5">
+            <span class="text-teal fw-bold text-uppercase">Transit Network</span>
+            <h2 class="fw-bold">Popular Amravati Corridors</h2>
+            <p class="text-muted">High-frequency bus links operating across key commercial, educational, and residential hubs.</p>
+        </div>
+
+        <div class="row g-4" id="routesGrid">
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="badge bg-primary fs-6">Route R-101</span>
+                        <span class="badge bg-light text-success border">14.5 km</span>
+                    </div>
+                    <h5 class="fw-bold">Badnera Station &harr; SGBAU University</h5>
+                    <p class="text-muted small">Via Rajkamal Square, Irwin General Hospital, Panchavati Square, and Gadge Nagar Gate.</p>
+                    <div class="d-flex justify-content-between align-items-center pt-3 border-top">
+                        <span class="fw-bold text-teal">Base Fare: ₹15.00</span>
+                        <a href="passenger_dashboard.html" class="btn btn-sm btn-outline-primary">Book Ride</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="badge bg-primary fs-6">Route R-102</span>
+                        <span class="badge bg-light text-success border">5.2 km</span>
+                    </div>
+                    <h5 class="fw-bold">Central Bus Stand &harr; HVPM Sports Complex</h5>
+                    <p class="text-muted small">Via Rajkamal Chowk and Shivaji Nagar. Ideal for college students and athletes.</p>
+                    <div class="d-flex justify-content-between align-items-center pt-3 border-top">
+                        <span class="fw-bold text-teal">Base Fare: ₹10.00</span>
+                        <a href="passenger_dashboard.html" class="btn btn-sm btn-outline-primary">Book Ride</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="badge bg-primary fs-6">Route R-103</span>
+                        <span class="badge bg-light text-success border">9.8 km</span>
+                    </div>
+                    <h5 class="fw-bold">Rajkamal Square &harr; Walgaon MIDC</h5>
+                    <p class="text-muted small">Industrial feeder corridor serving daily manufacturing staff, technicians, and traders.</p>
+                    <div class="d-flex justify-content-between align-items-center pt-3 border-top">
+                        <span class="fw-bold text-teal">Base Fare: ₹12.00</span>
+                        <a href="passenger_dashboard.html" class="btn btn-sm btn-outline-primary">Book Ride</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key System Features -->
+    <section class="bg-white py-5" id="features">
+        <div class="container py-4">
+            <div class="text-center mb-5">
+                <span class="text-teal fw-bold text-uppercase">DBMS Practical Demonstration</span>
+                <h2 class="fw-bold">Advanced Relational Transport Management</h2>
+                <p class="text-muted">Normalized 3NF MySQL Database Architecture with ACID-compliant Transactions</p>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-database"></i></div>
+                        <h5 class="fw-bold">Normalized 3NF MySQL Schema</h5>
+                        <p class="text-muted small">15 relational tables with composite keys, strict foreign key constraints, and multi-column indexes.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-lock"></i></div>
+                        <h5 class="fw-bold">Concurrency & Seat Locking</h5>
+                        <p class="text-muted small">Pessimistic row locking (<code>FOR UPDATE</code>) eliminates double bookings and guarantees transaction atomicity.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
+                        <h5 class="fw-bold">Administrative BI Analytics</h5>
+                        <p class="text-muted small">Interactive Chart.js visualizations for revenue by payment method, popular routes, and bus occupancy rates.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container text-center">
+            <p class="mb-1 fw-bold">Amravati City Bus Management System &bull; IT Engineering DBMS Project</p>
+            <p class="text-muted small mb-0">Demonstrative fictional schedule data for academic submission and viva voce.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Check if user is logged in
+            const user = getStoredUser();
+            if (user) {
+                const navAuth = document.getElementById('navAuthLinks');
+                if (navAuth) {
+                    const dashboardUrl = user.role === 'admin' ? 'dashboard.html' : 'passenger_dashboard.html';
+                    navAuth.innerHTML = `
+                        <a href="${dashboardUrl}" class="btn btn-teal btn-sm px-3 me-2">
+                            <i class="fas fa-tachometer-alt me-1"></i> Dashboard
+                        </a>
+                        <button class="btn btn-outline-light btn-sm btn-logout">Logout</button>
+                    `;
+                }
+            }
+
+            // Populate Quick Search Dropdowns
+            try {
+                const res = await apiRequest('/stops');
+                const stops = res.data || [];
+                const srcSel = document.getElementById('quickSourceStop');
+                const dstSel = document.getElementById('quickDestStop');
+                
+                const opts = stops.map(s => `<option value="${s.stop_id}">${s.stop_name}</option>`).join('');
+                srcSel.innerHTML = '<option value="">Select Boarding Point</option>' + opts;
+                dstSel.innerHTML = '<option value="">Select Drop-off Point</option>' + opts;
+
+                // Pre-select today's date
+                document.getElementById('quickTravelDate').value = new Date().toISOString().split('T')[0];
+            } catch (e) {
+                console.warn('Could not load stops:', e);
+            }
+
+            // Search Form Handler
+            document.getElementById('landingSearchForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const src = document.getElementById('quickSourceStop').value;
+                const dst = document.getElementById('quickDestStop').value;
+                const date = document.getElementById('quickTravelDate').value;
+
+                if (!src || !dst) {
+                    showToast('Please select both origin and destination stops.', 'warning');
+                    return;
+                }
+
+                try {
+                    const res = await apiRequest(`/schedules/search?source_stop_id=${src}&dest_stop_id=${dst}&date=${date}`);
+                    const schedules = res.data || [];
+                    const container = document.getElementById('quickSearchResults');
+                    const list = document.getElementById('quickSchedulesList');
+                    container.classList.remove('d-none');
+
+                    if (schedules.length === 0) {
+                        list.innerHTML = `<div class="col-12 text-center py-3 text-muted">No scheduled buses found for this date. Try another date or route.</div>`;
+                        return;
+                    }
+
+                    list.innerHTML = schedules.map(s => `
+                        <div class="col-md-6">
+                            <div class="card p-3 border shadow-sm h-100">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="badge bg-primary fs-6">${s.route_number}</span>
+                                    <span class="badge ${s.available_seats > 5 ? 'bg-success' : 'bg-danger'}">${s.available_seats} seats left</span>
+                                </div>
+                                <h6 class="fw-bold mb-1">${s.route_name}</h6>
+                                <p class="text-muted small mb-2">
+                                    <i class="far fa-clock text-teal me-1"></i> ${formatTime(s.departure_time)} - ${formatTime(s.arrival_time)}
+                                    &bull; Bus: ${s.bus_number} (${s.bus_type})
+                                </p>
+                                <div class="d-flex justify-content-between align-items-center pt-2 border-top mt-auto">
+                                    <strong class="text-teal fs-5">${formatCurrency(s.fare)}</strong>
+                                    <a href="passenger_dashboard.html?schedule_id=${s.schedule_id}&source_id=${src}&dest_id=${dst}" class="btn btn-sm btn-teal">
+                                        Select Seats & Book
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+                } catch (err) {
+                    showToast(err.message, 'danger');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

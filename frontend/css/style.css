@@ -1,0 +1,206 @@
+/* ==============================================================================
+   Amravati City Bus Management System
+   Main Theme Stylesheet (Navy Blue, Teal, White Palette)
+   ============================================================================== */
+
+:root {
+    --primary-navy: #1a365d;
+    --navy-dark: #0f172a;
+    --navy-light: #2d4a77;
+    --accent-teal: #0d9488;
+    --teal-hover: #0f766e;
+    --teal-light: #ccfbf1;
+    --bg-light: #f8fafc;
+    --card-bg: #ffffff;
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
+    --border-color: #e2e8f0;
+    --success-green: #10b981;
+    --danger-red: #ef4444;
+    --warning-amber: #f59e0b;
+    --sidebar-width: 260px;
+    --header-height: 70px;
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.08), 0 2px 4px -1px rgba(0,0,0,0.04);
+    --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+}
+
+body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background-color: var(--bg-light);
+    color: var(--text-primary);
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+}
+
+/* Navbar */
+.navbar-custom {
+    background-color: var(--primary-navy);
+    box-shadow: var(--shadow-md);
+    padding: 0.8rem 1.5rem;
+}
+
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.35rem;
+    color: #ffffff !important;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.navbar-brand i {
+    color: #38bdf8;
+}
+
+.nav-link {
+    color: #cbd5e1 !important;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.nav-link:hover, .nav-link.active {
+    color: #ffffff !important;
+}
+
+/* Custom Buttons */
+.btn-primary-navy {
+    background-color: var(--primary-navy);
+    color: #ffffff;
+    border: none;
+    font-weight: 600;
+    padding: 0.6rem 1.3rem;
+    border-radius: var(--radius-sm);
+    transition: all 0.2s;
+}
+
+.btn-primary-navy:hover {
+    background-color: var(--navy-dark);
+    color: #ffffff;
+    transform: translateY(-1px);
+}
+
+.btn-teal {
+    background-color: var(--accent-teal);
+    color: #ffffff;
+    border: none;
+    font-weight: 600;
+    padding: 0.6rem 1.3rem;
+    border-radius: var(--radius-sm);
+    transition: all 0.2s;
+}
+
+.btn-teal:hover {
+    background-color: var(--teal-hover);
+    color: #ffffff;
+    transform: translateY(-1px);
+}
+
+/* Landing Page Hero Section */
+.hero-section {
+    background: linear-gradient(135deg, #1a365d 0%, #0f172a 100%);
+    color: #ffffff;
+    padding: 5rem 0 4rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-section::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(circle at 85% 20%, rgba(13, 148, 136, 0.25) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+.hero-title {
+    font-size: 2.75rem;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 1.25rem;
+}
+
+.hero-subtitle {
+    font-size: 1.2rem;
+    color: #94a3b8;
+    margin-bottom: 2rem;
+}
+
+/* Search Card */
+.search-card {
+    background-color: #ffffff;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    padding: 2rem;
+    margin-top: -2.5rem;
+    position: relative;
+    z-index: 10;
+    border: 1px solid var(--border-color);
+}
+
+/* Feature Cards */
+.feature-card {
+    background: #ffffff;
+    border-radius: var(--radius-md);
+    padding: 2rem;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.25s ease;
+    height: 100%;
+}
+
+.feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--accent-teal);
+}
+
+.feature-icon {
+    width: 54px;
+    height: 54px;
+    border-radius: 12px;
+    background-color: var(--teal-light);
+    color: var(--accent-teal);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin-bottom: 1.25rem;
+}
+
+/* Badges */
+.badge-active {
+    background-color: #dcfce7;
+    color: #15803d;
+    font-weight: 600;
+}
+
+.badge-maintenance {
+    background-color: #fef3c7;
+    color: #b45309;
+    font-weight: 600;
+}
+
+.badge-cancelled {
+    background-color: #fee2e2;
+    color: #b91c1c;
+    font-weight: 600;
+}
+
+.badge-confirmed {
+    background-color: #d1fae5;
+    color: #065f46;
+    font-weight: 600;
+}
+
+/* Toast Container */
+.toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+}

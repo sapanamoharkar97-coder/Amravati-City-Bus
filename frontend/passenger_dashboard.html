@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Passenger Portal | Amravati City Bus Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/dashboard.css" rel="stylesheet">
+    <link href="css/forms.css" rel="stylesheet">
+</head>
+<body>
+
+    <div class="dashboard-wrapper">
+        <!-- Sidebar Navigation -->
+        <aside class="dashboard-sidebar">
+            <div class="sidebar-header">
+                <a href="passenger_dashboard.html" class="sidebar-brand">
+                    <i class="fas fa-bus-alt text-teal"></i>
+                    <span>Passenger Portal</span>
+                </a>
+            </div>
+
+            <div class="sidebar-nav">
+                <div class="nav-section-title">Travel Services</div>
+                <a href="passenger_dashboard.html" class="sidebar-link active">
+                    <i class="fas fa-search-location"></i>
+                    <span>Search & Book</span>
+                </a>
+                <a href="bookings.html" class="sidebar-link">
+                    <i class="fas fa-history"></i>
+                    <span>My Bookings</span>
+                </a>
+                <a href="tickets.html" class="sidebar-link">
+                    <i class="fas fa-ticket-alt"></i>
+                    <span>My Boarding Pass</span>
+                </a>
+
+                <div class="nav-section-title">Account</div>
+                <a href="profile.html" class="sidebar-link">
+                    <i class="fas fa-user-circle"></i>
+                    <span>My Profile</span>
+                </a>
+            </div>
+
+            <div class="sidebar-footer">
+                <button class="btn btn-sm btn-outline-light w-100 btn-logout">
+                    <i class="fas fa-sign-out-alt me-1"></i> Sign Out
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <!-- Header -->
+            <header class="dashboard-header">
+                <div class="d-flex align-items-center gap-3">
+                    <h5 class="fw-bold mb-0">Book City Bus Tickets</h5>
+                </div>
+
+                <div class="d-flex align-items-center gap-3">
+                    <div class="user-profile-menu">
+                        <div id="headerUserAvatar" class="avatar-circle">P</div>
+                        <div class="d-none d-md-block text-start">
+                            <div id="headerUserName" class="fw-bold small lh-1">Passenger</div>
+                            <small id="headerUserRole" class="text-muted" style="font-size: 0.75rem;">PASSENGER</small>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="dashboard-content">
+                <!-- Search Box Card -->
+                <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
+                    <h5 class="fw-bold mb-3"><i class="fas fa-route text-teal me-2"></i>Find Bus Schedules in Amravati</h5>
+                    <form id="passengerSearchForm" class="row g-3">
+                        <div class="col-md-4">
+                            <label class="form-label">Boarding Stop</label>
+                            <select id="paxSourceStop" class="form-select" required>
+                                <option value="">Select Boarding Point</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Destination Stop</label>
+                            <select id="paxDestStop" class="form-select" required>
+                                <option value="">Select Drop-off Point</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Travel Date</label>
+                            <input type="date" id="paxTravelDate" class="form-control" required>
+                        </div>
+                        <div class="col-md-2 d-flex align-items-end">
+                            <button type="submit" class="btn btn-teal w-100 py-2">
+                                <i class="fas fa-search me-1"></i> Search Buses
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Search Results Grid -->
+                <div id="schedulesResultsSection" class="d-none">
+                    <h5 class="fw-bold mb-3"><i class="fas fa-bus text-primary me-2"></i>Available Bus Services</h5>
+                    <div id="schedulesCardsContainer" class="row g-3 mb-4"></div>
+                </div>
+
+                <!-- Interactive Seat Selection Modal -->
+                <div class="modal fade" id="seatSelectionModal" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-lg modal-dialog-centered">
+                        <div class="modal-content rounded-4 border-0 shadow">
+                            <div class="modal-header bg-primary-navy text-white">
+                                <h5 class="modal-title fw-bold" id="seatModalTitle">Select Seats</h5>
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body p-4">
+                                <div class="row">
+                                    <!-- Visual Bus Grid -->
+                                    <div class="col-md-7 border-end">
+                                        <div class="bus-seat-layout">
+                                            <div class="bus-front-indicator">
+                                                <i class="fas fa-steering-wheel"></i> Front of Bus (Driver Side)
+                                            </div>
+                                            <div id="seatGrid" class="seats-grid">
+                                                <!-- Dynamic seats generated via JS -->
+                                            </div>
+                                            <div class="seat-legend">
+                                                <div class="legend-item"><div class="legend-color available"></div> Available</div>
+                                                <div class="legend-item"><div class="legend-color selected"></div> Selected</div>
+                                                <div class="legend-item"><div class="legend-color booked"></div> Booked</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Selection Summary & Passenger Inputs -->
+                                    <div class="col-md-5">
+                                        <h6 class="fw-bold border-bottom pb-2">Booking Summary</h6>
+                                        <div class="mb-2 small">
+                                            <span class="text-muted">Route:</span> <strong id="sumRoute">-</strong><br>
+                                            <span class="text-muted">Bus:</span> <strong id="sumBus">-</strong><br>
+                                            <span class="text-muted">Timing:</span> <strong id="sumTiming">-</strong><br>
+                                            <span class="text-muted">Fare/Seat:</span> <strong class="text-teal" id="sumUnitFare">₹0.00</strong>
+                                        </div>
+
+                                        <div class="alert alert-info py-2 small" id="selectedSeatsNotice">
+                                            Click on available seats on the layout to choose.
+                                        </div>
+
+                                        <!-- Passenger Details Inputs for Selected Seats -->
+                                        <div id="passengerInputsContainer" class="mb-3" style="max-height: 180px; overflow-y: auto;">
+                                            <!-- Dynamically generated rows -->
+                                        </div>
+
+                                        <!-- Demo Payment Selection -->
+                                        <div class="mb-3">
+                                            <label class="form-label small fw-bold">Select Demo Payment Method</label>
+                                            <select id="paymentMethodSelect" class="form-select form-select-sm">
+                                                <option value="DEMO_UPI">Demo UPI (GPay / PhonePe / Paytm)</option>
+                                                <option value="DEMO_CARD">Demo Rupay / Visa Card</option>
+                                                <option value="DEMO_CASH">Demo Cash at Bus Counter</option>
+                                                <option value="DEMO_NETBANKING">Demo Net Banking</option>
+                                            </select>
+                                            <small class="text-muted d-block mt-1" style="font-size: 0.72rem;">* Academic demonstration payment only (no real currency charged)</small>
+                                        </div>
+
+                                        <div class="border-top pt-3 d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <span class="text-muted small d-block">Total Fare:</span>
+                                                <h4 class="fw-bold text-teal mb-0" id="sumTotalAmount">₹0.00</h4>
+                                            </div>
+                                            <button id="btnConfirmBooking" class="btn btn-teal px-4" disabled>
+                                                <i class="fas fa-check-circle me-1"></i> Book Now
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Booking Success Modal -->
+                <div class="modal fade" id="bookingSuccessModal" tabindex="-1" data-bs-backdrop="static">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content text-center p-4 rounded-4 border-0 shadow">
+                            <div class="mb-3 text-success">
+                                <i class="fas fa-check-circle fa-4x"></i>
+                            </div>
+                            <h4 class="fw-bold text-success mb-1">Booking Confirmed!</h4>
+                            <p class="text-muted small mb-3">Your seats have been locked and ticket generated successfully.</p>
+
+                            <div class="bg-light p-3 rounded-3 text-start mb-3 small">
+                                <div><strong>Booking Reference:</strong> <span id="sucBookingRef">-</span></div>
+                                <div><strong>Ticket Number:</strong> <span id="sucTicketNum">-</span></div>
+                                <div><strong>Seats:</strong> <span id="sucSeats">-</span></div>
+                                <div><strong>Total Paid:</strong> <span id="sucAmount" class="text-teal fw-bold">-</span></div>
+                            </div>
+
+                            <div class="d-flex justify-content-center gap-2">
+                                <a id="btnViewTicket" href="tickets.html" class="btn btn-teal">
+                                    <i class="fas fa-print me-1"></i> View & Print Ticket
+                                </a>
+                                <a href="bookings.html" class="btn btn-outline-secondary">
+                                    View Booking History
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        let selectedSeats = [];
+        let currentSchedule = null;
+        let currentUnitFare = 0;
+        let currentSourceStopId = null;
+        let currentDestStopId = null;
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const user = requireAuth('passenger');
+            if (!user) return;
+
+            // Load stops
+            try {
+                const res = await apiRequest('/stops');
+                const stops = res.data || [];
+                const srcSel = document.getElementById('paxSourceStop');
+                const dstSel = document.getElementById('paxDestStop');
+                const opts = stops.map(s => `<option value="${s.stop_id}">${s.stop_name}</option>`).join('');
+                srcSel.innerHTML = '<option value="">Select Boarding Point</option>' + opts;
+                dstSel.innerHTML = '<option value="">Select Drop-off Point</option>' + opts;
+
+                document.getElementById('paxTravelDate').value = new Date().toISOString().split('T')[0];
+
+                // Auto-fill from URL params if coming from landing page
+                const urlParams = new URLSearchParams(window.location.search);
+                if (urlParams.get('source_id') && urlParams.get('dest_id')) {
+                    srcSel.value = urlParams.get('source_id');
+                    dstSel.value = urlParams.get('dest_id');
+                    document.getElementById('passengerSearchForm').dispatchEvent(new Event('submit'));
+                }
+            } catch (e) {
+                showToast(e.message, 'danger');
+            }
+
+            // Search Form Submit
+            document.getElementById('passengerSearchForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const src = document.getElementById('paxSourceStop').value;
+                const dst = document.getElementById('paxDestStop').value;
+                const date = document.getElementById('paxTravelDate').value;
+
+                if (src === dst) {
+                    showToast('Boarding and destination stops must be different.', 'warning');
+                    return;
+                }
+
+                currentSourceStopId = parseInt(src, 10);
+                currentDestStopId = parseInt(dst, 10);
+
+                try {
+                    const res = await apiRequest(`/schedules/search?source_stop_id=${src}&dest_stop_id=${dst}&date=${date}`);
+                    const schedules = res.data || [];
+                    const section = document.getElementById('schedulesResultsSection');
+                    const cardsContainer = document.getElementById('schedulesCardsContainer');
+                    section.classList.remove('d-none');
+
+                    if (schedules.length === 0) {
+                        cardsContainer.innerHTML = `
+                            <div class="col-12 text-center py-5">
+                                <i class="fas fa-bus fa-3x text-muted mb-2"></i>
+                                <h6>No direct bus services found for this date.</h6>
+                                <p class="text-muted small">Please select different halts or date.</p>
+                            </div>
+                        `;
+                        return;
+                    }
+
+                    cardsContainer.innerHTML = schedules.map(s => `
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card border-0 shadow-sm rounded-4 p-3 h-100">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="badge bg-primary fs-6">${s.route_number}</span>
+                                    <span class="badge ${s.available_seats > 5 ? 'bg-success' : 'bg-danger'}">
+                                        ${s.available_seats} / ${s.total_capacity} Seats
+                                    </span>
+                                </div>
+                                <h6 class="fw-bold mb-1">${s.route_name}</h6>
+                                <small class="text-muted d-block mb-2">
+                                    <i class="fas fa-clock text-teal me-1"></i> ${formatTime(s.departure_time)} &rarr; ${formatTime(s.arrival_time)}
+                                </small>
+                                <div class="bg-light p-2 rounded-2 small mb-3">
+                                    <div><strong>Bus:</strong> ${s.bus_number} (${s.bus_type})</div>
+                                    <div><strong>Distance:</strong> ${s.distance_km} km</div>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center mt-auto pt-2 border-top">
+                                    <strong class="text-teal fs-5">${formatCurrency(s.fare)}</strong>
+                                    <button class="btn btn-teal btn-sm" onclick="openSeatModal(${s.schedule_id}, ${s.fare})">
+                                        <i class="fas fa-chair me-1"></i> Select Seats
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+                } catch (err) {
+                    showToast(err.message, 'danger');
+                }
+            });
+
+            // Confirm Booking Action
+            document.getElementById('btnConfirmBooking').addEventListener('click', async () => {
+                if (selectedSeats.length === 0) return;
+
+                const seatsPayload = selectedSeats.map(seatNum => {
+                    const nameInput = document.getElementById(`paxName_${seatNum}`);
+                    const ageInput = document.getElementById(`paxAge_${seatNum}`);
+                    const genderInput = document.getElementById(`paxGender_${seatNum}`);
+
+                    return {
+                        seat_number: seatNum,
+                        passenger_name: nameInput ? nameInput.value.trim() : 'Passenger',
+                        passenger_age: ageInput ? parseInt(ageInput.value, 10) : 25,
+                        passenger_gender: genderInput ? genderInput.value : 'other'
+                    };
+                });
+
+                const paymentMethod = document.getElementById('paymentMethodSelect').value;
+
+                const payload = {
+                    schedule_id: currentSchedule.schedule_id,
+                    source_stop_id: currentSourceStopId,
+                    dest_stop_id: currentDestStopId,
+                    seats: seatsPayload,
+                    payment_method: paymentMethod
+                };
+
+                const btn = document.getElementById('btnConfirmBooking');
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i> Locking Seats...';
+
+                try {
+                    const res = await apiRequest('/bookings', 'POST', payload);
+                    if (res.success && res.data) {
+                        bootstrap.Modal.getInstance(document.getElementById('seatSelectionModal'))?.hide();
+
+                        document.getElementById('sucBookingRef').textContent = res.data.booking_reference;
+                        document.getElementById('sucTicketNum').textContent = res.data.ticket_number;
+                        document.getElementById('sucSeats').textContent = res.data.booked_seats.join(', ');
+                        document.getElementById('sucAmount').textContent = formatCurrency(res.data.total_amount);
+                        document.getElementById('btnViewTicket').href = `tickets.html?ticket_id=${res.data.ticket_number || ''}&booking_id=${res.data.booking_id}`;
+
+                        new bootstrap.Modal(document.getElementById('bookingSuccessModal')).show();
+                    }
+                } catch (err) {
+                    showToast(err.message, 'danger');
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-check-circle me-1"></i> Book Now';
+                }
+            });
+        });
+
+        async function openSeatModal(scheduleId, fare) {
+            try {
+                const res = await apiRequest(`/schedules/${scheduleId}`);
+                currentSchedule = res.data;
+                currentUnitFare = fare;
+                selectedSeats = [];
+
+                document.getElementById('seatModalTitle').textContent = `Select Seats - ${currentSchedule.route_number} (${currentSchedule.bus_number})`;
+                document.getElementById('sumRoute').textContent = `${currentSchedule.route_number}: ${currentSchedule.route_name}`;
+                document.getElementById('sumBus').textContent = `${currentSchedule.bus_number} (${currentSchedule.bus_type})`;
+                document.getElementById('sumTiming').textContent = `${formatDate(currentSchedule.journey_date)} at ${formatTime(currentSchedule.departure_time)}`;
+                document.getElementById('sumUnitFare').textContent = formatCurrency(currentUnitFare);
+
+                renderSeatGrid(currentSchedule.capacity, currentSchedule.booked_seats || []);
+                updateSelectionSummary();
+
+                new bootstrap.Modal(document.getElementById('seatSelectionModal')).show();
+            } catch (e) {
+                showToast(`Failed to load seat layout: ${e.message}`, 'danger');
+            }
+        }
+
+        function renderSeatGrid(capacity, bookedSeats) {
+            const grid = document.getElementById('seatGrid');
+            grid.innerHTML = '';
+
+            for (let i = 1; i <= capacity; i++) {
+                const isBooked = bookedSeats.includes(i);
+                const seatBox = document.createElement('div');
+                seatBox.className = `seat-box ${isBooked ? 'booked' : 'available'}`;
+                seatBox.textContent = i;
+                seatBox.title = isBooked ? `Seat ${i} (Booked)` : `Seat ${i} (Available)`;
+
+                if (!isBooked) {
+                    seatBox.addEventListener('click', () => toggleSeat(i, seatBox));
+                }
+                grid.appendChild(seatBox);
+            }
+        }
+
+        function toggleSeat(seatNumber, el) {
+            const idx = selectedSeats.indexOf(seatNumber);
+            if (idx > -1) {
+                selectedSeats.splice(idx, 1);
+                el.classList.remove('selected');
+                el.classList.add('available');
+            } else {
+                if (selectedSeats.length >= 6) {
+                    showToast('Maximum 6 seats per booking transaction.', 'warning');
+                    return;
+                }
+                selectedSeats.push(seatNumber);
+                el.classList.remove('available');
+                el.classList.add('selected');
+            }
+            updateSelectionSummary();
+        }
+
+        function updateSelectionSummary() {
+            const notice = document.getElementById('selectedSeatsNotice');
+            const totalEl = document.getElementById('sumTotalAmount');
+            const btn = document.getElementById('btnConfirmBooking');
+            const container = document.getElementById('passengerInputsContainer');
+
+            if (selectedSeats.length === 0) {
+                notice.textContent = 'Click on available seats on the layout to choose.';
+                totalEl.textContent = formatCurrency(0);
+                btn.disabled = true;
+                container.innerHTML = '';
+                return;
+            }
+
+            const total = selectedSeats.length * currentUnitFare;
+            notice.textContent = `Selected Seats: ${selectedSeats.sort((a,b)=>a-b).join(', ')}`;
+            totalEl.textContent = formatCurrency(total);
+            btn.disabled = false;
+
+            const user = getStoredUser();
+            container.innerHTML = selectedSeats.map((num, i) => `
+                <div class="card p-2 mb-2 bg-light border-0 small">
+                    <strong class="text-teal mb-1">Passenger for Seat #${num}</strong>
+                    <div class="row g-2">
+                        <div class="col-6">
+                            <input type="text" id="paxName_${num}" class="form-control form-control-sm" 
+                                   placeholder="Full Name" value="${i === 0 && user ? user.full_name : ''}" required>
+                        </div>
+                        <div class="col-3">
+                            <input type="number" id="paxAge_${num}" class="form-control form-control-sm" 
+                                   placeholder="Age" min="5" max="100" value="25" required>
+                        </div>
+                        <div class="col-3">
+                            <select id="paxGender_${num}" class="form-select form-select-sm">
+                                <option value="male">M</option>
+                                <option value="female">F</option>
+                                <option value="other">O</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+    </script>
+</body>
+</html>

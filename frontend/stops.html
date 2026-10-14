@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bus Stops Management | Amravati City Bus System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/dashboard.css" rel="stylesheet">
+    <link href="css/forms.css" rel="stylesheet">
+</head>
+<body>
+
+    <div class="dashboard-wrapper">
+        <aside class="dashboard-sidebar">
+            <div class="sidebar-header">
+                <a href="dashboard.html" class="sidebar-brand">
+                    <i class="fas fa-bus-alt text-teal"></i>
+                    <span>Amravati Bus</span>
+                </a>
+            </div>
+
+            <div class="sidebar-nav">
+                <div class="nav-section-title">Core Administration</div>
+                <a href="dashboard.html" class="sidebar-link">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="buses.html" class="sidebar-link">
+                    <i class="fas fa-bus"></i>
+                    <span>Bus Fleet</span>
+                </a>
+                <a href="routes.html" class="sidebar-link">
+                    <i class="fas fa-route"></i>
+                    <span>Routes</span>
+                </a>
+                <a href="stops.html" class="sidebar-link active">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Bus Stops</span>
+                </a>
+
+                <div class="nav-section-title">Operations & Crew</div>
+                <a href="schedules.html" class="sidebar-link">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Schedules</span>
+                </a>
+                <a href="drivers.html" class="sidebar-link">
+                    <i class="fas fa-id-card"></i>
+                    <span>Drivers</span>
+                </a>
+                <a href="conductors.html" class="sidebar-link">
+                    <i class="fas fa-user-tie"></i>
+                    <span>Conductors</span>
+                </a>
+
+                <div class="nav-section-title">Finance & Intelligence</div>
+                <a href="bookings.html" class="sidebar-link">
+                    <i class="fas fa-ticket-alt"></i>
+                    <span>Bookings</span>
+                </a>
+                <a href="reports.html" class="sidebar-link">
+                    <i class="fas fa-chart-pie"></i>
+                    <span>Analytics & Reports</span>
+                </a>
+
+                <div class="nav-section-title">Account</div>
+                <a href="profile.html" class="sidebar-link">
+                    <i class="fas fa-user-cog"></i>
+                    <span>My Profile</span>
+                </a>
+            </div>
+
+            <div class="sidebar-footer">
+                <button class="btn btn-sm btn-outline-light w-100 btn-logout">
+                    <i class="fas fa-sign-out-alt me-1"></i> Sign Out
+                </button>
+            </div>
+        </aside>
+
+        <main class="dashboard-main">
+            <header class="dashboard-header">
+                <div class="d-flex align-items-center gap-3">
+                    <h5 class="fw-bold mb-0">Bus Stops Directory</h5>
+                    <span class="badge bg-light text-muted border">Table: <code>bus_stops</code></span>
+                </div>
+
+                <div class="d-flex align-items-center gap-3">
+                    <div class="user-profile-menu">
+                        <div id="headerUserAvatar" class="avatar-circle">AD</div>
+                        <div class="d-none d-md-block text-start">
+                            <div id="headerUserName" class="fw-bold small lh-1">Admin</div>
+                            <small id="headerUserRole" class="text-muted" style="font-size: 0.75rem;">ADMINISTRATOR</small>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="dashboard-content">
+                <div class="card border-0 shadow-sm p-3 mb-4 rounded-3 bg-white">
+                    <div class="row g-2 align-items-center">
+                        <div class="col-md-9">
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="fas fa-search text-muted"></i></span>
+                                <input type="text" id="searchInput" class="form-control" placeholder="Search by stop name or landmark...">
+                            </div>
+                        </div>
+                        <div class="col-md-3 text-md-end">
+                            <button class="btn btn-teal w-100" onclick="openAddStopModal()">
+                                <i class="fas fa-plus me-1"></i> Add Bus Stop
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-card">
+                    <div class="table-card-header">
+                        <h6 class="fw-bold mb-0"><i class="fas fa-map-pin text-teal me-2"></i>Amravati City Transit Stops</h6>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table custom-table align-middle">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Stop Name</th>
+                                    <th>Landmark</th>
+                                    <th>GPS Coordinates</th>
+                                    <th>Status</th>
+                                    <th class="text-end">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="stopsTableBody">
+                                <tr><td colspan="6" class="text-center py-4 text-muted">Loading stops...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add/Edit Stop Modal -->
+    <div class="modal fade" id="stopModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4 border-0 shadow">
+                <div class="modal-header bg-primary-navy text-white">
+                    <h5 class="modal-title fw-bold" id="stopModalTitle">Add Bus Stop</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="stopForm">
+                    <div class="modal-body p-4">
+                        <input type="hidden" id="stopId">
+                        <div class="mb-3">
+                            <label class="form-label">Stop Name</label>
+                            <input type="text" class="form-control" id="stopName" placeholder="e.g. Irwin Hospital Chowk" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Landmark / Location Detail</label>
+                            <input type="text" class="form-control" id="landmark" placeholder="e.g. Opposite General Hospital Main Gate">
+                        </div>
+                        <div class="row g-2 mb-3">
+                            <div class="col-6">
+                                <label class="form-label">Latitude</label>
+                                <input type="number" step="0.000001" class="form-control" id="latitude" placeholder="20.937800">
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label">Longitude</label>
+                                <input type="number" step="0.000001" class="form-control" id="longitude" placeholder="77.755400">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer bg-light">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-teal">Save Stop</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/stops.js"></script>
+</body>
+</html>

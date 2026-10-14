@@ -1,0 +1,14 @@
+# Core Web Framework
+Flask==3.0.3
+Flask-Cors==4.0.1
+
+# MySQL Database Connectors (mysql-connector-python primary, PyMySQL fallback)
+mysql-connector-python==8.4.0
+PyMySQL==1.1.0
+
+# Security and Cryptography
+Werkzeug==3.0.3
+python-dotenv==1.0.1
+
+# Optional reporting helper
+tabulate==0.9.0

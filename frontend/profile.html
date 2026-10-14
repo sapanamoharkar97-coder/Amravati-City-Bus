@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile | Amravati City Bus Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/dashboard.css" rel="stylesheet">
+    <link href="css/forms.css" rel="stylesheet">
+</head>
+<body>
+
+    <div class="dashboard-wrapper">
+        <aside class="dashboard-sidebar">
+            <div class="sidebar-header">
+                <a href="dashboard.html" class="sidebar-brand">
+                    <i class="fas fa-bus-alt text-teal"></i>
+                    <span>Amravati Bus</span>
+                </a>
+            </div>
+
+            <div class="sidebar-nav">
+                <div class="nav-section-title">Navigation</div>
+                <a href="dashboard.html" id="dashProfileLink" class="sidebar-link">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="bookings.html" class="sidebar-link">
+                    <i class="fas fa-ticket-alt"></i>
+                    <span>Bookings</span>
+                </a>
+                <a href="profile.html" class="sidebar-link active">
+                    <i class="fas fa-user-cog"></i>
+                    <span>My Profile</span>
+                </a>
+            </div>
+
+            <div class="sidebar-footer">
+                <button class="btn btn-sm btn-outline-light w-100 btn-logout">
+                    <i class="fas fa-sign-out-alt me-1"></i> Sign Out
+                </button>
+            </div>
+        </aside>
+
+        <main class="dashboard-main">
+            <header class="dashboard-header">
+                <div class="d-flex align-items-center gap-3">
+                    <h5 class="fw-bold mb-0">My Account Profile</h5>
+                </div>
+
+                <div class="d-flex align-items-center gap-3">
+                    <div class="user-profile-menu">
+                        <div id="headerUserAvatar" class="avatar-circle">U</div>
+                        <div class="d-none d-md-block text-start">
+                            <div id="headerUserName" class="fw-bold small lh-1">User</div>
+                            <small id="headerUserRole" class="text-muted" style="font-size: 0.75rem;">ROLE</small>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="dashboard-content">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                            <div class="card-header bg-primary-navy text-white p-4">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="avatar-circle bg-teal fs-4" style="width: 58px; height: 58px;" id="profileAvatarLarge">U</div>
+                                    <div>
+                                        <h5 class="fw-bold mb-0" id="profileFullNameTitle">Loading Profile...</h5>
+                                        <small class="text-light opacity-75" id="profileRoleBadge">ACCOUNT</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card-body p-4">
+                                <div id="profileAlert" class="alert alert-success d-none"></div>
+
+                                <form id="profileForm">
+                                    <div class="row g-3 mb-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label">Username</label>
+                                            <input type="text" class="form-control bg-light" id="profUsername" readonly>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Email Address</label>
+                                            <input type="email" class="form-control bg-light" id="profEmail" readonly>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Full Name</label>
+                                            <input type="text" class="form-control" id="profFullName" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Mobile Phone</label>
+                                            <input type="tel" class="form-control" id="profPhone" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Gender</label>
+                                            <select class="form-select" id="profGender">
+                                                <option value="male">Male</option>
+                                                <option value="female">Female</option>
+                                                <option value="other">Other</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Age</label>
+                                            <input type="number" class="form-control" id="profAge" min="5" max="100">
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="form-label">Residential Address (Amravati)</label>
+                                            <input type="text" class="form-control" id="profAddress">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Emergency Contact Phone</label>
+                                            <input type="tel" class="form-control" id="profEmergency">
+                                        </div>
+                                    </div>
+
+                                    <div class="text-end border-top pt-3">
+                                        <button type="submit" id="btnSaveProfile" class="btn btn-teal px-4">
+                                            <i class="fas fa-save me-1"></i> Save Changes
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const user = requireAuth();
+            if (!user) return;
+
+            // Link adaptation
+            if (user.role === 'passenger') {
+                const dash = document.getElementById('dashProfileLink');
+                if (dash) {
+                    dash.href = 'passenger_dashboard.html';
+                    dash.innerHTML = '<i class="fas fa-search-location"></i> <span>Search & Book</span>';
+                }
+            }
+
+            try {
+                const res = await apiRequest('/auth/me');
+                const u = res.data;
+                const p = u.profile || {};
+
+                document.getElementById('profUsername').value = u.username;
+                document.getElementById('profEmail').value = u.email;
+                document.getElementById('profFullName').value = u.full_name;
+                document.getElementById('profPhone').value = u.phone;
+                document.getElementById('profileFullNameTitle').textContent = u.full_name;
+                document.getElementById('profileRoleBadge').textContent = u.role.toUpperCase();
+
+                const initials = u.full_name.split(' ').map(n=>n[0]).join('').substring(0,2).toUpperCase();
+                document.getElementById('profileAvatarLarge').textContent = initials;
+
+                document.getElementById('profGender').value = p.gender || 'male';
+                document.getElementById('profAge').value = p.age || 25;
+                document.getElementById('profAddress').value = p.address || '';
+                document.getElementById('profEmergency').value = p.emergency_contact || '';
+            } catch (err) {
+                showToast(`Failed loading profile: ${err.message}`, 'danger');
+            }
+
+            document.getElementById('profileForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const btn = document.getElementById('btnSaveProfile');
+                btn.disabled = true;
+
+                const payload = {
+                    full_name: document.getElementById('profFullName').value.trim(),
+                    phone: document.getElementById('profPhone').value.trim(),
+                    gender: document.getElementById('profGender').value,
+                    age: parseInt(document.getElementById('profAge').value, 10),
+                    address: document.getElementById('profAddress').value.trim(),
+                    emergency_contact: document.getElementById('profEmergency').value.trim()
+                };
+
+                try {
+                    const res = await apiRequest('/auth/profile', 'PUT', payload);
+                    if (res.success) {
+                        showToast('Profile updated successfully!', 'success');
+                        // Update local stored user
+                        const cur = getStoredUser();
+                        cur.full_name = payload.full_name;
+                        cur.phone = payload.phone;
+                        localStorage.setItem('amravati_bus_user', JSON.stringify(cur));
+                        updateHeaderUserUI(cur);
+                        document.getElementById('profileFullNameTitle').textContent = payload.full_name;
+                    }
+                } catch (err) {
+                    showToast(err.message, 'danger');
+                } finally {
+                    btn.disabled = false;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
